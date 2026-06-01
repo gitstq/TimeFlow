@@ -5,16 +5,18 @@ from datetime import datetime, timedelta
 
 from timeflow.core.session import SessionManager
 from timeflow.core.project import ProjectManager
+from timeflow.core.config import Config
 from timeflow.core.models import Session
 
 
 class TimeTracker:
     """时间追踪器主类."""
     
-    def __init__(self):
+    def __init__(self, config: Optional[Config] = None):
         """初始化追踪器."""
-        self.session_manager = SessionManager()
-        self.project_manager = ProjectManager()
+        self.config = config or Config()
+        self.session_manager = SessionManager(self.config)
+        self.project_manager = ProjectManager(self.config)
     
     def start_session(
         self,

@@ -1,7 +1,7 @@
 """TimeFlow 项目管理."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Optional, Dict, Any
 
@@ -12,9 +12,9 @@ from timeflow.core.config import Config
 class ProjectManager:
     """项目管理器."""
     
-    def __init__(self):
+    def __init__(self, config: Optional[Config] = None):
         """初始化项目管理器."""
-        self.config = Config()
+        self.config = config or Config()
         self.projects_file = self.config.get_projects_file()
         self._projects: Dict[str, Project] = {}
         self._load_projects()
@@ -112,7 +112,6 @@ class ProjectManager:
         if name not in self._projects:
             self.create_project(name)
         
-        from datetime import timedelta
         project = self._projects[name]
         project.total_time += timedelta(seconds=duration_seconds)
         if increment_session:
@@ -123,8 +122,6 @@ class ProjectManager:
     
     def get_project_stats(self, name: str) -> Dict[str, Any]:
         """获取项目统计."""
-        from datetime import timedelta
-        
         if name not in self._projects:
             return {
                 "total_hours": 0,

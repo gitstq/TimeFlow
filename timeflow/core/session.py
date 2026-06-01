@@ -14,9 +14,9 @@ from timeflow.core.config import Config
 class SessionManager:
     """会话管理器."""
     
-    def __init__(self):
+    def __init__(self, config: Optional[Config] = None):
         """初始化会话管理器."""
-        self.config = Config()
+        self.config = config or Config()
         self.sessions_file = self.config.get_sessions_file()
         self._sessions: List[Session] = []
         self._current_session: Optional[Session] = None
